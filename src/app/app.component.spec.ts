@@ -1,35 +1,44 @@
-import { TestBed, async } from '@angular/core/testing';
-import { RouterTestingModule } from '@angular/router/testing';
+import { TestBed, ComponentFixture } from '@angular/core/testing';
 import { AppComponent } from './app.component';
 
 describe('AppComponent', () => {
-  beforeEach(async(() => {
-    TestBed.configureTestingModule({
-      imports: [
-        RouterTestingModule
-      ],
-      declarations: [
-        AppComponent
-      ],
+  let fixture: ComponentFixture<AppComponent>;
+  let app: AppComponent;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      declarations: [AppComponent],
     }).compileComponents();
-  }));
 
-  it('should create the app', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app).toBeTruthy();
+    fixture = TestBed.createComponent(AppComponent);
+    app = fixture.componentInstance;
   });
 
-  it(`should have as title 'demo'`, () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    const app = fixture.debugElement.componentInstance;
-    expect(app.title).toEqual('demo');
+  it('should return 0 for an empty string', () => {
+    expect(app.add("")).toEqual(0);
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('demo app is running!');
+  it('should return 1 when the input is "1"', () => {
+    expect(app.add("1")).toEqual(1);
+  });
+
+  it('should return 6 when the input is "1,5"', () => {
+    expect(app.add("1,5")).toEqual(6);
+  });
+
+  it('should return 6 when the input is "1\n2,3"', () => {
+    expect(app.add("1\n2,3")).toEqual(6);
+  });
+
+  it('should handle custom delimiters like "//;\n1;2"', () => {
+    expect(app.add("//;\n1;2")).toEqual(3);
+  });
+
+  it('should throw an error when negative numbers are passed', () => {
+    expect(() => app.add("1,-2,3")).toThrowError('Negative numbers not allowed: -2');
+  });
+
+  it('should handle custom delimiters of multiple characters like "//*\n1**2**3"', () => {
+    expect(app.add("//*\n1**2**3")).toEqual(6);
   });
 });
