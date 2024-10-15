@@ -44,7 +44,7 @@ export class AppComponent implements OnInit {
       { input: "//;\n1;2", expected: 3 },
       { input: "//|\n2|3|4", expected: 9 },
       { input: "//***\n1***2***3", expected: 6 },
-      { input: "1,-2,3", expected: "error" } // This case will throw an error
+      { input: "1,-2,3", expected: "error" } 
     ];
 
     tests.forEach(({ input, expected }) => {
